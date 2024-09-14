@@ -7,29 +7,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Briefcase, GraduationCap, Library } from "lucide-react";
-
+let data;
 export default function LandingPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
-
+  // const data = {
+  //   name: name,
+  //   email: email,
+  //   phone_number: parseInt(phone, 10),
+  // }
   // Handle form submission
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // data = {
-    //   "name": name,
-    //   "email":email,
-    //   "phone_number": phone_number
-    // }
+   
 
     try {
-      const res = await fetch("https:/api.creplanos.com/api/subscribe", {
+      const res = await fetch("https://api.creplanos.com/api/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, phone_number: phone }),
+        // body: JSON.stringify({ name, email, phone_number: phone }),
+        body: JSON.stringify({name, email, phone_number: parseInt(phone,10)})
       });
 
       const data = await res.json();
@@ -37,7 +38,9 @@ export default function LandingPage() {
         setMessage("You've successfully joined the waitlist!");
       } else {
         console.error(data); // Log error details
-        setMessage(`Error: ${data.error}`);
+        // setMessage(`Error: ${data.error}`);
+        // let's assume for now that it's only account exists error
+        setMessage("Superstar 👋, you have registered already with the above details");
       }
     } catch (error) {
       console.error("Failed to submit form:", error); // Catch network or JSON errors
@@ -169,7 +172,7 @@ export default function LandingPage() {
                   <Input
                     className="max-w-lg flex-1 border-gray-300 rounded"
                     placeholder="and your phone number 📱"
-                    type="tel"
+                    type="number"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required
