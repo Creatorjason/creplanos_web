@@ -123,7 +123,7 @@ export default function LandingPage() {
                   <Briefcase className="h-12 w-12 text-purple-500" />
                   <h3 className="text-xl font-bold">Job Guarantee</h3>
                   <p className="text-gray-500">
-                    We don’t just teach; we connect you with jobs that allow you to grow and fully utilize your new skills in a fair and enabling environment.
+                    We don’t just teach; we connect you with jobs that allows you to grow and fully utilize your new skills in a fair and enabling environment.
                   </p>
                 </CardContent>
               </Card>
@@ -132,7 +132,7 @@ export default function LandingPage() {
                   <GraduationCap className="h-12 w-12 text-purple-500" />
                   <h3 className="text-xl font-bold">Personalized Learning</h3>
                   <p className="text-gray-500">
-                    Our adaptive platform ensures you learn at your own pace, while guaranteeing job placement so you can thrive in your career.
+                    Our adaptive platform ensures you learn at your own pace, while guaranteeing a job placement so you can thrive in your career.
                   </p>
                 </CardContent>
               </Card>
@@ -147,9 +147,9 @@ export default function LandingPage() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Ready to Start Your Journey?</h2>
                 <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Join thousands of students who have already transformed their careers with Creplanos. Sign up now
-                  and take the first step towards your dream job.
-                </p>
+  Join us on a journey to rewrite the narrative that success comes through illegal means—learn the skills that empower you to thrive early, the right way.
+</p>
+
               </div>
               <div className="w-full max-w-sm space-y-2">
                 <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
