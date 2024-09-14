@@ -1,15 +1,54 @@
-import Link from "next/link"; // Update import statement for Next.js Link
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Briefcase, GraduationCap } from "lucide-react";
+import { BookOpen, Briefcase, GraduationCap, Library } from "lucide-react";
 
 export default function LandingPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+
+  // Handle form submission
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    // data = {
+    //   "name": name,
+    //   "email":email,
+    //   "phone_number": phone_number
+    // }
+
+    try {
+      const res = await fetch("https:/api.creplanos.com/api/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, phone_number: phone }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setMessage("You've successfully joined the waitlist!");
+      } else {
+        console.error(data); // Log error details
+        setMessage(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Failed to submit form:", error); // Catch network or JSON errors
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <Link className="flex items-center justify-center" href="#">
-          <GraduationCap className="h-6 w-6" />
+          <Library className="h-6 w-6" />
           <span className="sr-only">Creplanos</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
@@ -27,130 +66,78 @@ export default function LandingPage() {
           </Link>
         </nav>
       </header>
-      <main className="flex-1 mx-4 lg:mx-6"> {/* Add margin here */}
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
-      <div className="container px-4 md:px-6">
-        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-          <div className="flex flex-col justify-center space-y-4 text-white">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                Learn. Grow. Succeed.
-              </h1>
-              <p className="max-w-[600px] text-gray-200 text-sm sm:text-base md:text-lg lg:text-xl">
-                Master in-demand skills and land your dream job with SkillBridge. We offer cutting-edge courses and
-                guaranteed job placements.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <Button className="bg-white text-purple-600 hover:bg-gray-100">Get Started</Button>
-              <Button variant="outline" className="text-white border-white hover:bg-white/20">
-                Learn More
-              </Button>
+
+      <main className="flex-1 mx-4 lg:mx-6">
+        {/* First section with gradient background */}
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+              <div className="flex flex-col justify-center space-y-4 text-white">
+                <div className="space-y-2">
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                    Learn. Grow. Succeed.
+                  </h1>
+                  <p className="max-w-[600px] text-gray-200 text-sm sm:text-base md:text-lg lg:text-xl">
+                    Master in-demand skills and launch your career with Creplanos. Our hands-on training and guaranteed job offerings ensures you succeed early in your journey.
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button className="bg-white text-purple-600 hover:bg-gray-100">Get Started</Button>
+                  <Button variant="outline" className="text-white border-white hover:bg-white/20">
+                    Learn More
+                  </Button>
+                </div>
+              </div>
+              <div className="flex justify-center lg:justify-end">
+                <Image
+                  src={"/ed_pic.jpg"}
+                  alt="Students learning"
+                  width={550}
+                  height={550}
+                  className="w-full max-w-[400px] lg:max-w-[550px] aspect-video overflow-hidden rounded-xl object-cover object-center"
+                />
+              </div>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end">
-            <img
-              alt="Students learning"
-              className="w-full max-w-[400px] lg:max-w-[550px] aspect-video overflow-hidden rounded-xl object-cover object-center"
-              height="550"
-              src="/placeholder.svg?height=550&width=550"
-              width="550"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
+
+        {/* Why Choose Creplanos section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
           <div className="container px-4 md:px-6 mx-auto">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">Why Choose Creplanos?</h2>
             <div className="grid gap-6 lg:grid-cols-3">
               <Card>
-                <CardContent className="flex flex-col items-center space-y-4 p-6 text-center"> {/* Center text */}
+                <CardContent className="flex flex-col items-center space-y-4 p-6 text-center">
                   <BookOpen className="h-12 w-12 text-purple-500" />
                   <h3 className="text-xl font-bold">Cutting-edge Curriculum</h3>
                   <p className="text-gray-500">
-                    Our courses are designed by industry experts to teach you the most in-demand skills.
+                    Our courses are designed to teach you in-demand skills at affordable prices, ensuring you’re well-prepared for the real world.
                   </p>
                 </CardContent>
               </Card>
               <Card>
-                <CardContent className="flex flex-col items-center space-y-4 p-6 text-center"> {/* Center text */}
+                <CardContent className="flex flex-col items-center space-y-4 p-6 text-center">
                   <Briefcase className="h-12 w-12 text-purple-500" />
                   <h3 className="text-xl font-bold">Job Guarantee</h3>
                   <p className="text-gray-500">
-                    We're so confident in our program that we guarantee job placement upon completion.
+                    We don’t just teach; we connect you with jobs that allow you to grow and fully utilize your new skills in a fair and enabling environment.
                   </p>
                 </CardContent>
               </Card>
               <Card>
-                <CardContent className="flex flex-col items-center space-y-4 p-6 text-center"> {/* Center text */}
+                <CardContent className="flex flex-col items-center space-y-4 p-6 text-center">
                   <GraduationCap className="h-12 w-12 text-purple-500" />
                   <h3 className="text-xl font-bold">Personalized Learning</h3>
                   <p className="text-gray-500">
-                    Our adaptive learning platform ensures you learn at your own pace and style.
+                    Our adaptive platform ensures you learn at your own pace, while guaranteeing job placement so you can thrive in your career.
                   </p>
                 </CardContent>
               </Card>
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6 mx-auto">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">What Our Students Say</h2>
-            <div className="grid gap-6 lg:grid-cols-2">
-              <Card>
-                <CardContent className="flex flex-col space-y-4 p-6 text-center"> {/* Center text */}
-                  <p className="text-gray-500 italic">
-                    "Creplanos transformed my career. I went from a dead-end job to a thriving tech career in just 6
-                    months!"
-                  </p>
-                  <div className="flex items-center space-x-4 justify-center mx-auto"> {/* Center content */}
-                    <img
-                      alt="Student portrait"
-                      className="rounded-full"
-                      height="40"
-                      src="/placeholder.svg?height=40&width=40"
-                      style={{
-                        aspectRatio: "40/40",
-                        objectFit: "cover",
-                      }}
-                      width="40"
-                    />
-                    <div>
-                      <p className="text-sm font-medium">Sarah Johnson</p>
-                      <p className="text-sm text-gray-500">Software Developer</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="flex flex-col space-y-4 p-6 text-center"> {/* Center text */}
-                  <p className="text-gray-500 italic">
-                    "The personalized learning approach and job placement support made all the difference. I'm now
-                    working at my dream company!"
-                  </p>
-                  <div className="flex items-center space-x-4 justify-center mx-auto"> {/* Center content */}
-                    <img
-                      alt="Student portrait"
-                      className="rounded-full"
-                      height="40"
-                      src="/placeholder.svg?height=40&width=40"
-                      style={{
-                        aspectRatio: "40/40",
-                        objectFit: "cover",
-                      }}
-                      width="40"
-                    />
-                    <div>
-                      <p className="text-sm font-medium">Michael Chen</p>
-                      <p className="text-sm text-gray-500">Data Analyst</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
+
+        {/* Call to action section with signup form */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -162,23 +149,43 @@ export default function LandingPage() {
                 </p>
               </div>
               <div className="w-full max-w-sm space-y-2">
-                <form className="flex space-x-2">
-                  <Input className="max-w-lg flex-1" placeholder="Enter your email" type="email" />
-                  <Button type="submit">Sign Up</Button>
+                <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
+                  <Input
+                    className="max-w-lg flex-1 border-gray-300 rounded"
+                    placeholder="Hey👋 superstar, your name please"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                  <Input
+                    className="max-w-lg flex-1 border-gray-300 rounded"
+                    placeholder="your email too 📧"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <Input
+                    className="max-w-lg flex-1 border-gray-300 rounded"
+                    placeholder="and your phone number 📱"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                  {/* bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded */}
+                  <Button type="submit" className="white rounded border-indigo-300">Join Waitlist</Button>
                 </form>
-                <p className="text-xs text-gray-500">
-                  By signing up, you agree to our{" "}
-                  <Link className="underline underline-offset-2" href="#">
-                    Terms & Conditions
-                  </Link>
-                </p>
+                {message && <p className="text-sm text-green-500">{message}</p>}
               </div>
             </div>
           </div>
         </section>
       </main>
+
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500">© 2023 Creplanos. All rights reserved.</p>
+        <p className="text-xs text-gray-500">© 2024 Creplanos. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link className="text-xs hover:underline underline-offset-4" href="#">
             Terms of Service
