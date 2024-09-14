@@ -13,6 +13,8 @@ export default function LandingPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
   // const data = {
   //   name: name,
   //   email: email,
@@ -21,31 +23,30 @@ export default function LandingPage() {
   // Handle form submission
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-   
-
+    setLoading(true); // Start spinner
+    
     try {
       const res = await fetch("https://api.creplanos.com/api/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // body: JSON.stringify({ name, email, phone_number: phone }),
-        body: JSON.stringify({name, email, phone_number: parseInt(phone,10)})
+        body: JSON.stringify({ name, email, phone_number: parseInt(phone, 10) }),
       });
-
+  
       const data = await res.json();
       if (res.ok) {
         setMessage("You've successfully joined the waitlist!");
       } else {
-        console.error(data); // Log error details
-        // setMessage(`Error: ${data.error}`);
-        // let's assume for now that it's only account exists error
         setMessage("Superstar 👋, you have registered already with the above details");
       }
     } catch (error) {
-      console.error("Failed to submit form:", error); // Catch network or JSON errors
+      console.error("Failed to submit form:", error);
+    } finally {
+      setLoading(false); // Stop spinner
     }
   };
+  
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -178,7 +179,28 @@ export default function LandingPage() {
                     required
                   />
                   {/* bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded */}
-                  <Button type="submit" className="white rounded border-indigo-300">Join Waitlist</Button>
+                  <Button type="submit" className="white rounded border-indigo-300" disabled={loading}>
+  {loading ? (
+    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.964 7.964 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
+    </svg>
+  ) : (
+    "Join Waitlist"
+  )}
+</Button>
+
                 </form>
                 {message && <p className="text-sm text-green-500">{message}</p>}
               </div>
